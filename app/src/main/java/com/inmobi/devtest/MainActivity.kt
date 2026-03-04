@@ -17,6 +17,22 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        
+        try {
+            val assetsManager = AssetsManager(this)
+            val lyrics = LyricsParser().parse(assetsManager.getLyricsInputStream())
+            android.util.Log.d("LyricsParserTest", "Successfully parsed ${lyrics.lines.size} lines from XML.")
+            if (lyrics.lines.isNotEmpty()) {
+                val firstLine = lyrics.lines.first()
+                android.util.Log.d("LyricsParserTest", "First line text: ${firstLine.text}")
+                for ((index, word) in firstLine.words.withIndex()) {
+                    android.util.Log.d("LyricsParserTest", "Word ${index + 1}: [${word.text}] | Start: ${word.startTime} | Duration: ${word.duration}")
+                }
+            }
+        } catch (e: Exception) {
+            android.util.Log.e("LyricsParserTest", "Error parsing lyrics", e)
+        }
+
         setContent {
             DevTestINMOBITheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
