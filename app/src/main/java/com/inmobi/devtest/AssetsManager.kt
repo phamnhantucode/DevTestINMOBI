@@ -6,12 +6,8 @@ import java.io.InputStream
 
 class AssetsManager(private val context: Context) {
 
-    fun getBeatFileDescriptor(): AssetFileDescriptor {
-        return context.assets.openFd("beat.mp3")
-    }
-
-    fun getBeatInputStream(): InputStream {
-        return context.assets.open("beat.mp3")
+    fun getBeatUri(): String {
+        return "asset:///beat.mp3"
     }
 
     fun getLyricsInputStream(): InputStream {

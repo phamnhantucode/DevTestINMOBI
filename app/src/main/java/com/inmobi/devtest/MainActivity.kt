@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
@@ -14,25 +15,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.inmobi.devtest.ui.theme.DevTestINMOBITheme
 
 class MainActivity : ComponentActivity() {
+
+    private val viewModel: MainViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        
-        try {
-            val assetsManager = AssetsManager(this)
-            val lyrics = LyricsParser().parse(assetsManager.getLyricsInputStream())
-            android.util.Log.d("LyricsParserTest", "Successfully parsed ${lyrics.lines.size} lines from XML.")
-            if (lyrics.lines.isNotEmpty()) {
-                val firstLine = lyrics.lines.first()
-                android.util.Log.d("LyricsParserTest", "First line text: ${firstLine.text}")
-                for ((index, word) in firstLine.words.withIndex()) {
-                    android.util.Log.d("LyricsParserTest", "Word ${index + 1}: [${word.text}] | Start: ${word.startTime} | Duration: ${word.duration}")
-                }
-            }
-        } catch (e: Exception) {
-            android.util.Log.e("LyricsParserTest", "Error parsing lyrics", e)
-        }
-
+        viewModel.mp3Player.play()
         setContent {
             DevTestINMOBITheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
