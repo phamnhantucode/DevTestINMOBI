@@ -1,4 +1,4 @@
-package com.inmobi.devtest
+package com.inmobi.devtest.core
 
 import android.util.Xml
 import com.inmobi.devtest.model.Line

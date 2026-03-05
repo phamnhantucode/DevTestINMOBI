@@ -5,13 +5,14 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import com.inmobi.devtest.ui.screen.PlayerScreen
 import com.inmobi.devtest.ui.theme.DevTestINMOBITheme
 
 class MainActivity : ComponentActivity() {
@@ -21,32 +22,32 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        viewModel.mp3Player.play()
         setContent {
+            val isPlaying by viewModel.isPlaying.collectAsState()
+            val currentPosition by viewModel.currentPosition.collectAsState()
+            val duration by viewModel.duration.collectAsState()
+            val lyrics by viewModel.lyrics.collectAsState()
+            val currentLineIndex by viewModel.currentLineIndex.collectAsState()
+
             DevTestINMOBITheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
+                    Box(modifier = Modifier.padding(innerPadding)) {
+                        lyrics?.let { loadedLyrics ->
+                            PlayerScreen(
+                                lyrics = loadedLyrics,
+                                currentLineIndex = currentLineIndex,
+                                isPlaying = isPlaying,
+                                currentPosition = currentPosition,
+                                duration = duration,
+                                onPlayPauseClick = viewModel::togglePlayPause,
+                                onSeek = viewModel::seekTo,
+                                onPreviousClick = viewModel::skipBackward,
+                                onNextClick = viewModel::skipForward
+                            )
+                        }
+                    }
                 }
             }
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    DevTestINMOBITheme {
-        Greeting("Android")
     }
 }

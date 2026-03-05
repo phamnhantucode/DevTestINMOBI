@@ -1,7 +1,6 @@
-package com.inmobi.devtest
+package com.inmobi.devtest.core
 
 import android.content.Context
-import android.content.res.AssetFileDescriptor
 import java.io.InputStream
 
 class AssetsManager(private val context: Context) {
