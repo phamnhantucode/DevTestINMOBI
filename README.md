@@ -2,4 +2,4 @@
 
 ## Demo
 
-![Watch the video](https://raw.githubusercontent.com/user/DevTestINMOBI/main/demo/demo_video.mp4)
+[![Watch the video](https://github.com/phamnhantucode/DevTestINMOBI/blob/main/demo/demo_video.mp4)
